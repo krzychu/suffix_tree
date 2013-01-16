@@ -62,6 +62,12 @@ void stree::Tree::add(int letter)
 
 
 
+void stree::Tree::add(const Text & text)
+{
+  for(unsigned int i = 0; i < text.size(); i++)
+    add(text[i]);
+}
+
 
 bool stree::Tree::contains(const Text & t) const
 {

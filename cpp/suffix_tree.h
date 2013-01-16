@@ -23,11 +23,9 @@ struct Substr
 
 
 
-
-
-
 struct Context;
 struct RefPair;
+
 
 struct Node : public Substr
 {
@@ -80,6 +78,7 @@ class Tree
     ~Tree();
     
     void add(int letter);
+    void add(const Text & text);
     Node * root() const {return root_;}
     int alphabet_size() const {return alphabet_size_;}
 
