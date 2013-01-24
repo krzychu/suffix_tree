@@ -2,58 +2,51 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
+
 using namespace stree;
 
-const int asize = 10;
-
-Text str2text(const char * str, const char * end = 0)
-{
-  Text t; 
-  while(*str && str != end){
-    t.push_back(*str - 'a');
-    str++;
-  }
-  return t;
-}
+const int asize = 'z' + 1;
+typedef std::vector<int> Text;
 
 
 class ComponentsTest : public ::testing::Test
 {
   protected:
     ComponentsTest() 
-      : t(str2text("abcdabc")),
-      cx(t)
+      : str("abcdabc"), text(str.begin(), str.end()), cx(text)
     {}
 
     virtual void SetUp(){
-      root = new Node(0, 0, asize);
+      root = new Node<int>(0, 0, asize);
 
-      root_abc = new Node(0, 3, asize);
-      root->children[0] = root_abc;
+      root_abc = new Node<int>(0, 3, asize);
+      root->children['a'] = root_abc;
 
-      root_c = new Node(2, 3, asize);
-      root->children[2] = root_c;
+      root_c = new Node<int>(2, 3, asize);
+      root->children['c'] = root_c;
 
-      root_abc_a = new Node(0,1, asize); 
-      root_abc->children[0] = root_abc_a;
+      root_abc_a = new Node<int>(0,1, asize); 
+      root_abc->children['a'] = root_abc_a;
 
-      root_abc_d = new Node(3, 4, asize);
-      root_abc->children[3] = root_abc_d;
+      root_abc_d = new Node<int>(3, 4, asize);
+      root_abc->children['d'] = root_abc_d;
 
-      root_c_b = new Node(1, 2, asize);
-      root_c->children[1] = root_c_b;
+      root_c_b = new Node<int>(1, 2, asize);
+      root_c->children['b'] = root_c_b;
     }
 
     virtual void TearDown(){
       delete root; 
     }
   
-    Text t;
-    Context cx;
 
-    Node * root;
-    Node * root_abc, * root_c;
-    Node * root_abc_a, * root_abc_d, * root_c_b;
+    const std::string str;
+    std::vector<int> text;
+    Context<int> cx;
+
+    Node<int> * root;
+    Node<int> * root_abc, * root_c;
+    Node<int> * root_abc_a, * root_abc_d, * root_c_b;
 };
 
 
@@ -63,10 +56,9 @@ TEST(Substr, CalculatesSize)
   ASSERT_EQ(10, s.size());
 }
 
-
 TEST_F(ComponentsTest, CheckIfItsImplicit)
 {
-  RefPair rp(0, 4, 5);
+  RefPair<int> rp(0, 4, 5);
   ASSERT_TRUE(rp.implicit());
   rp.begin = 5;
   ASSERT_FALSE(rp.implicit());
@@ -75,10 +67,10 @@ TEST_F(ComponentsTest, CheckIfItsImplicit)
 
 TEST_F(ComponentsTest, NextReturnsCorrectChild)
 {
-  Node * root = new Node(0, 0, asize);
-  Node * child = new Node(0, 3, asize);
-  root->children[0] = child;
-  RefPair rp(root, 0, 1);
+  Node<int> * root = new Node<int>(0, 0, asize);
+  Node<int> * child = new Node<int>(0, 3, asize);
+  root->children['a'] = child;
+  RefPair<int> rp(root, 0, 1);
   ASSERT_EQ(child, rp.next(cx));
   delete root;
 }
@@ -86,27 +78,27 @@ TEST_F(ComponentsTest, NextReturnsCorrectChild)
 
 TEST_F(ComponentsTest, HasTransitionForExplicitNode)
 {
-  RefPair rp(root, 0, 0);
-  ASSERT_TRUE(rp.has_trans(cx, 0)); 
-  ASSERT_TRUE(rp.has_trans(cx, 2)); 
-  ASSERT_FALSE(rp.has_trans(cx, 1)); 
-  ASSERT_FALSE(rp.has_trans(cx, 3)); 
+  RefPair<int> rp(root, 0, 0);
+  ASSERT_TRUE(rp.has_trans(cx, 'a')); 
+  ASSERT_TRUE(rp.has_trans(cx, 'c')); 
+  ASSERT_FALSE(rp.has_trans(cx, 'b')); 
+  ASSERT_FALSE(rp.has_trans(cx, 'd')); 
 }
 
 
 TEST_F(ComponentsTest, HasTransitionForImplicitNode)
 {
-  RefPair rp(root, 4, 5);
-  ASSERT_TRUE(rp.has_trans(cx, 1));
-  ASSERT_FALSE(rp.has_trans(cx, 0));
-  ASSERT_FALSE(rp.has_trans(cx, 2));
-  ASSERT_FALSE(rp.has_trans(cx, 3));
+  RefPair<int> rp(root, 4, 5);
+  ASSERT_TRUE(rp.has_trans(cx, 'b'));
+  ASSERT_FALSE(rp.has_trans(cx, 'a'));
+  ASSERT_FALSE(rp.has_trans(cx, 'c'));
+  ASSERT_FALSE(rp.has_trans(cx, 'd'));
 }
 
 
 TEST_F(ComponentsTest, CanonizeWorks)
 {
-  RefPair rp(root, 0, 4);
+  RefPair<int> rp(root, 0, 4);
   rp.canonize(cx);
   
   ASSERT_FALSE(rp.implicit());
@@ -118,11 +110,11 @@ TEST_F(ComponentsTest, CanonizeWorks)
 
 TEST_F(ComponentsTest, SplitWorks)
 {
-  RefPair where(root, 4, 6);
-  Node * mid = root->split(cx, where);
+  RefPair<int> where(root, 4, 6);
+  Node<int> * mid = root->split(cx, where);
   
   ASSERT_EQ(where.size(), mid->size());
-  ASSERT_EQ(root_abc, mid->children[2]);
+  ASSERT_EQ(root_abc, mid->children['c']);
   ASSERT_EQ(1, root_abc->size());
-  ASSERT_EQ(mid, root->children[0]);
+  ASSERT_EQ(mid, root->children['a']);
 }

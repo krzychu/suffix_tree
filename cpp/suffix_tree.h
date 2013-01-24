@@ -6,11 +6,6 @@
 
 namespace stree{
 
-
-
-typedef std::vector<char> Text;
-
-
 struct Substr
 {
   int begin;
@@ -22,79 +17,99 @@ struct Substr
 };
 
 
-
+template<class T>
 struct Context;
+
+template<class T>
 struct RefPair;
 
 
+template<class T>
 struct Node : public Substr
 {
-  Node ** children;
+  Node<T> ** children;
   int alphabet_size;
-  Node * suffix_link;
+  Node<T> * suffix_link;
 
   Node(int b, int e, int alphabet);
   ~Node();
   
-  Node * split(const Context & cx, const RefPair & rp);
+  Node * split(const Context<T> & cx, const RefPair<T> & rp);
   bool leaf() const;
 
-  void dump(std::ostream & out, int indent , const Context & cx) const;
+  void dump(std::ostream & out, int indent, const Context<T> & cx) const;
 };
 
 
 
 
 
+
+template<class T>
 struct Context
 {
-  const Text & text;
-  Context(const Text & t) : text(t) {}
+  const std::vector<T> & text;
+  Context(const std::vector<T> & t) : text(t) {}
 };
 
 
 
 
 
+template<class T>
 struct RefPair : public Substr
 {
-  Node * node;
-  RefPair(Node * n = 0, int b = 0, int e = 0) 
+  Node<T> * node;
+  RefPair(Node<T> * n = 0, int b = 0, int e = 0) 
     : Substr(b, e), node(n) {}
 
   bool implicit() const;
   
-  void canonize(const Context & context);
-  Node * next(const Context & context) const;
-  bool has_trans(const Context & context, int letter) const;
+  void canonize(const Context<T> & context);
+  Node<T> * next(const Context<T> & context) const;
+  bool has_trans(const Context<T> & context, const T & letter) const;
 };
 
 
 
-class Tree
+
+
+template<class T>
+class SuffixTree
 {
   public:
-    Tree(int alphabet_size);
-    ~Tree();
+    SuffixTree(int alphabet_size);
+    ~SuffixTree();
     
-    void add(int letter);
-    void add(const Text & text);
-    Node * root() const {return root_;}
+    void push_back(const T & letter);
+
+    template<class InputIterator>
+    void add(InputIterator begin, InputIterator end);
+   
+    Node<T> * root() const { return root_; }
     int alphabet_size() const {return alphabet_size_;}
 
-    bool contains(const Text & t) const;
+    template<class InputIterator>
+    bool contains(InputIterator begin, InputIterator end) const;
+
     void dump(std::ostream & out) const;
 
   private:
-    Node * aux_;
-    Node * root_;
-    RefPair active_;
+    Node<T> * aux_;
+    Node<T> * root_;
+    RefPair<T> active_;
 
-    Text text_;
-    Context context_;
+    std::vector<T> text_;
+    Context<T> context_;
     int alphabet_size_;
 };
 
 }
+
+
+#include "refpair_impl.h"
+#include "node_impl.h"
+#include "tree_impl.h"
+
 
 #endif
