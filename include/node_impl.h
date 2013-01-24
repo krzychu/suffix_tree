@@ -48,7 +48,7 @@ void stree::Node<T>::dump
   else{
     out << "==> ";
     for(int i = begin; i < end && i < cx.text.size(); i++)
-      out << (char)(cx.text[i] + 'a');
+      out << (char)(cx.text[i]);
 
     if(!leaf())
       out << " " << size();
