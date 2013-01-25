@@ -1,28 +1,28 @@
 
-template<class T, class CC>
-stree::Node<T, CC>::Node(int b, int e, int s) 
+template<class T, template<class> class CC, class NE>
+stree::Node<T, CC, NE>::Node(int b, int e, int s) 
   : Substr(b, e), children(s), alphabet_size(s), suffix_link(0)
 {
 }
 
 
 
-template<class T, class CC>
-stree::Node<T, CC>::~Node()
+template<class T, template<class> class CC, class NE>
+stree::Node<T, CC, NE>::~Node()
 {
   children.delete_all();
 }
 
 
-template<class T, class CC>
-stree::Node<T, CC> * stree::Node<T, CC>::split
-  (const Context<T> & cx, const RefPair<T, CC> & where)
+template<class T, template<class> class CC, class NE>
+stree::Node<T, CC, NE> * stree::Node<T, CC, NE>::split
+  (const Context<T> & cx, const RefPair<T, CC, NE> & where)
 {
   int fl = cx.text[where.begin]; 
-  Node<T, CC> * son = children[fl];
+  Node<T, CC, NE> * son = children[fl];
   int ll = cx.text[son->begin + where.size()];
 
-  Node<T, CC> * mid = new Node<T, CC>(where.begin, where.end, alphabet_size);
+  Node<T, CC, NE> * mid = new Node<T, CC, NE>(where.begin, where.end, alphabet_size);
   children[fl] = mid;
   mid->children[ll] = son;
   son->begin += where.size();
@@ -31,8 +31,8 @@ stree::Node<T, CC> * stree::Node<T, CC>::split
 
 
 
-template<class T, class CC>
-void stree::Node<T, CC>::dump
+template<class T, template<class> class CC, class NE>
+void stree::Node<T, CC, NE>::dump
   (std::ostream & out, int indent , const Context<T> & cx) const
 { 
   for(int i = 0; i < indent; i++) out << " ";
@@ -64,8 +64,8 @@ void stree::Node<T, CC>::dump
 }
 
 
-template<class T, class CC>
-bool stree::Node<T, CC>::leaf() const
+template<class T, template<class> class CC, class NE>
+bool stree::Node<T, CC, NE>::leaf() const
 {
   return 0 == children.size();
 }

@@ -1,5 +1,4 @@
 #include <child_container/array.h>
-#include <suffix_tree.h>
 
 #include <gtest/gtest.h>
 
@@ -14,7 +13,7 @@ TEST(Array, SoCreative)
   ASSERT_EQ(100, array.alphabet_size());
 
   for(int i = 0; i < 100; i++)
-    array[i] = (stree::Node<int>*) 1;
+    array[i] = (int*) 1;
 
   ASSERT_EQ(100, array.size());
 }

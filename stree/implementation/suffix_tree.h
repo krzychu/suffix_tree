@@ -1,23 +1,23 @@
 #include <limits>
 
 
-template<class T, class CC>
-stree::SuffixTree<T, CC>::SuffixTree(int alphabet_size)
+template<class T, template<class> class CC, class NE>
+stree::SuffixTree<T, CC, NE>::SuffixTree(int alphabet_size)
   : context_(text_), alphabet_size_(alphabet_size)
 {
-  root_ = new Node<T, CC>(-1, 0, alphabet_size);
-  aux_ = new Node<T, CC>(0, 0, alphabet_size);
+  root_ = new Node<T, CC, NE>(-1, 0, alphabet_size);
+  aux_ = new Node<T, CC, NE>(0, 0, alphabet_size);
   for(int i = 0; i < alphabet_size; i++)
     aux_->children[i] = root_;
   root_->suffix_link = aux_;
 
-  active_ = RefPair<T, CC>(root_, 0, 0);
+  active_ = RefPair<T, CC, NE>(root_, 0, 0);
 }
 
 
 
-template<class T, class CC>
-stree::SuffixTree<T, CC>::~SuffixTree<T, CC>()
+template<class T, template<class> class CC, class NE>
+stree::SuffixTree<T, CC, NE>::~SuffixTree<T, CC, NE>()
 {
   for(int i = 0; i < alphabet_size_; i++)
     aux_->children[i] = 0;
@@ -28,12 +28,12 @@ stree::SuffixTree<T, CC>::~SuffixTree<T, CC>()
 
 
 
-template<class T, class CC>
-void stree::SuffixTree<T, CC>::push_back(const T & letter)
+template<class T, template<class> class CC, class NE>
+void stree::SuffixTree<T, CC, NE>::push_back(const T & letter)
 {
   const int inf = std::numeric_limits<int>::max() / 4;
-  Node<T, CC> * parent;
-  Node<T, CC> * last_parent = root_;
+  Node<T, CC, NE> * parent;
+  Node<T, CC, NE> * last_parent = root_;
   text_.push_back(letter);
   while(!active_.has_trans(context_, letter)){
     parent = active_.node;
@@ -41,7 +41,7 @@ void stree::SuffixTree<T, CC>::push_back(const T & letter)
       parent = parent->split(context_, active_);
    
     // add a leaf
-    parent->children[letter] = new Node<T, CC>(active_.end, inf, alphabet_size_);
+    parent->children[letter] = new Node<T, CC, NE>(active_.end, inf, alphabet_size_);
     
     if(last_parent != root_)
       last_parent->suffix_link = parent;
@@ -62,12 +62,12 @@ void stree::SuffixTree<T, CC>::push_back(const T & letter)
 
 
 
-template<class T, class CC>
+template<class T, template<class> class CC, class NE>
 template<class InputIterator>
-bool stree::SuffixTree<T, CC>::contains
+bool stree::SuffixTree<T, CC, NE>::contains
   (InputIterator begin, InputIterator end) const
 {
-  Node<T, CC> * cur = root_;  
+  Node<T, CC, NE> * cur = root_;  
   int on_edge = 1;
   for(InputIterator i = begin; i != end; i++){
     const T & letter = *i;
@@ -90,8 +90,8 @@ bool stree::SuffixTree<T, CC>::contains
 
 
 
-template<class T, class CC>
-void stree::SuffixTree<T, CC>::dump(std::ostream & out) const
+template<class T, template<class> class CC, class NE>
+void stree::SuffixTree<T, CC, NE>::dump(std::ostream & out) const
 {
   root_->dump(out, 0, context_);
 }

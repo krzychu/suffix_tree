@@ -7,6 +7,8 @@
 
 namespace stree{
 
+struct Empty {};
+
 struct Substr
 {
   int begin;
@@ -21,24 +23,24 @@ struct Substr
 template<class T>
 struct Context;
 
-template<class T, class CC>
+template<class T, template<class> class CC, class NE>
 struct RefPair;
 
 
 
 
 
-template<class T, class CC = Array<T> >
+template<class T, template<class> class CC = Array, class NE = Empty>
 struct Node : public Substr
 {
-  CC children;
+  CC< Node<T, CC, NE> > children;
   int alphabet_size;
-  Node<T, CC> * suffix_link;
+  Node<T, CC, NE> * suffix_link;
 
   Node(int b, int e, int alphabet);
   ~Node();
   
-  Node * split(const Context<T> & cx, const RefPair<T, CC> & rp);
+  Node * split(const Context<T> & cx, const RefPair<T, CC, NE> & rp);
   bool leaf() const;
 
   void dump(std::ostream & out, int indent, const Context<T> & cx) const;
@@ -60,17 +62,17 @@ struct Context
 
 
 
-template<class T, class CC = Array<T> >
-struct RefPair : public Substr
+template<class T, template<class> class CC = Array, class NE = Empty>
+struct RefPair : public Substr, public NE
 {
-  Node<T, CC> * node;
-  RefPair(Node<T, CC> * n = 0, int b = 0, int e = 0) 
+  Node<T, CC, NE> * node;
+  RefPair(Node<T, CC, NE> * n = 0, int b = 0, int e = 0) 
     : Substr(b, e), node(n) {}
 
   bool implicit() const;
   
   void canonize(const Context<T> & context);
-  Node<T, CC> * next(const Context<T> & context) const;
+  Node<T, CC, NE> * next(const Context<T> & context) const;
   bool has_trans(const Context<T> & context, const T & letter) const;
 };
 
@@ -78,7 +80,7 @@ struct RefPair : public Substr
 
 
 
-template<class T, class CC = Array<T> >
+template<class T, template<class> class CC = Array, class NE = Empty >
 class SuffixTree
 {
   public:
@@ -93,7 +95,7 @@ class SuffixTree
     template<class InputIterator>
     void add(InputIterator begin, InputIterator end);
    
-    Node<T, CC> * root() const { return root_; }
+    Node<T, CC, NE> * root() const { return root_; }
     int alphabet_size() const {return alphabet_size_;}
 
     template<class InputIterator>
@@ -102,9 +104,9 @@ class SuffixTree
     void dump(std::ostream & out) const;
 
   private:
-    Node<T, CC> * aux_;
-    Node<T, CC> * root_;
-    RefPair<T, CC> active_;
+    Node<T, CC, NE> * aux_;
+    Node<T, CC, NE> * root_;
+    RefPair<T, CC, NE> active_;
 
     std::vector<T> text_;
     Context<T> context_;
