@@ -10,6 +10,7 @@ if(${GTEST_FOUND})
     test/components_test.cpp
     test/tree_test.cpp
     test/array.cpp
+    test/visitor.cpp
     )
   target_link_libraries(test ${GTEST_BOTH_LIBRARIES})
 endif()

@@ -5,8 +5,8 @@
 
 namespace stree{
 
-template<class T>
-dump(const SuffixTree<T> & tree, 
+template<class T, class CC>
+dump(const SuffixTree<T, CC> & tree, 
 
 }
 
