@@ -24,6 +24,9 @@ template<class T>
 struct RefPair;
 
 
+
+
+
 template<class T>
 struct Node : public Substr
 {
@@ -78,6 +81,9 @@ template<class T>
 class SuffixTree
 {
   public:
+
+    typedef const T & const_reference; 
+
     SuffixTree(int alphabet_size);
     ~SuffixTree();
     
@@ -107,9 +113,9 @@ class SuffixTree
 }
 
 
-#include "refpair_impl.h"
-#include "node_impl.h"
-#include "tree_impl.h"
+#include "implementation/refpair.h"
+#include "implementation/node.h"
+#include "implementation/suffix_tree.h"
 
 
 #endif

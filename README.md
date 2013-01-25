@@ -1,15 +1,24 @@
-Suffix Tree implementation
+Online Suffix Tree implementation
 ==========================
 
-This is a C++ implementation of [Ukkonen](http://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf) algorithm.
+`suffix_tree` library is a C++ implementation of
+[Ukkonen](http://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf) algorithm.
 
-## Compilation ##
-`suffix_tree` is header-only library, so you don't have to compile anything : just put
+
+## Compilation ## 
+`suffix_tree` is header-only library, so you don't have to compile anything :
+just put
         
         #include <suffix_tree.h> 
 
-in your program. If you want to run unit tests, you have to compile them using CMake
-and GTest library.
+in your program. If you want to run unit tests, you have to compile them using
+CMake and GTest library.
+
+
+## Library overview ##
+
+
+## Ex
 
 TODO:
   - Create node pool for faster node adding
