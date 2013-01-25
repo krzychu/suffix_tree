@@ -6,7 +6,12 @@
 
 namespace stree{
 
-template<class Index, class Value>
+
+template<class T, class CC> 
+class Node;
+
+
+template<class T>
 class Array
 {
   public:
@@ -15,46 +20,46 @@ class Array
 
     int alphabet_size() const { return alphabet_size_; }
 
-    Value * operator[] (const Index & idx) const 
+    Node<T, Array> * operator[] (const T & idx) const 
       { return values_[(int) idx]; }
 
-    Value * & operator[] (const Index & idx)
+    Node<T, Array> * & operator[] (const T & idx)
       { return values_[(int) idx]; }
 
     void delete_all();
     int size() const;
 
   private:
-    Array(const Array<Index, Value> & other);
-    void operator = (const Array<Index, Value> & other);
+    Array(const Array<T> & other);
+    void operator = (const Array<T> & other);
 
     const int alphabet_size_;
-    Value ** values_;
+    Node<T, Array> ** values_;
 };
 
 
 
 
-template<class Index, class Value>
-Array<Index, Value>::Array(int alphabet_size)
+template<class T>
+Array<T>::Array(int alphabet_size)
   : alphabet_size_(alphabet_size)
 {
-  values_ = new Value* [alphabet_size];
-  std::fill(values_, values_ + alphabet_size, (Value*) 0); 
+  values_ = new Node<T, Array>* [alphabet_size];
+  std::fill(values_, values_ + alphabet_size, (Node<T, Array>*) 0); 
 }
 
 
 
-template<class Index, class Value>
-Array<Index, Value>::~Array<Index, Value>()
+template<class T>
+Array<T>::~Array<T>()
 {
   delete [] values_;
 }
 
 
 
-template<class Index, class Value>
-void Array<Index, Value>::delete_all() 
+template<class T>
+void Array<T>::delete_all() 
 {
   for(int i = 0; i < alphabet_size_; i++)
     delete values_[i];
@@ -62,11 +67,11 @@ void Array<Index, Value>::delete_all()
 
 
 
-template<class Index, class Value>
-int Array<Index, Value>::size() const
+template<class T>
+int Array<T>::size() const
 {
   return std::count_if(values_, values_ + alphabet_size_, 
-    std::bind1st(std::not_equal_to<Value*>(), (Value*)0));
+    std::bind1st(std::not_equal_to< Node<T, Array>* >(), (Node<T, Array>*)0));
 }
 
 

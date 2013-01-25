@@ -1,13 +1,13 @@
 
-template<class T>
-bool stree::RefPair<T>::implicit() const
+template<class T, class CC>
+bool stree::RefPair<T, CC>::implicit() const
 {
   return size() > 0;
 }
 
 
-template<class T>
-stree::Node<T> * stree::RefPair<T>::next
+template<class T, class CC>
+stree::Node<T, CC> * stree::RefPair<T, CC>::next
   (const Context<T> & context) const
 {
   int letter = context.text[begin];
@@ -15,8 +15,8 @@ stree::Node<T> * stree::RefPair<T>::next
 }
 
 
-template<class T>
-bool stree::RefPair<T>::has_trans
+template<class T, class CC>
+bool stree::RefPair<T, CC>::has_trans
   (const Context<T> & cx, const T & letter) const
 {
   if(implicit()){
@@ -29,8 +29,8 @@ bool stree::RefPair<T>::has_trans
 }
 
 
-template<class T>
-void stree::RefPair<T>::canonize(const Context<T> & cx)
+template<class T, class CC>
+void stree::RefPair<T, CC>::canonize(const Context<T> & cx)
 {
   while(implicit() && next(cx)->size() <= size()){
     node = next(cx);
