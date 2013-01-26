@@ -1,7 +1,7 @@
 
 template<class T, template<class> class CC, class NE>
-stree::Node<T, CC, NE>::Node(int b, int e, int s) 
-  : Substr(b, e), children(s), alphabet_size(s), suffix_link(0)
+stree::Node<T, CC, NE>::Node(int b, int e, int s, Type * p) 
+  : Substr(b, e), children(s), suffix_link(0), parent(p)
 {
 }
 
@@ -22,9 +22,11 @@ stree::Node<T, CC, NE> * stree::Node<T, CC, NE>::split
   Node<T, CC, NE> * son = children[fl];
   int ll = cx.text[son->begin + where.size()];
 
-  Node<T, CC, NE> * mid = new Node<T, CC, NE>(where.begin, where.end, alphabet_size);
+  Node<T, CC, NE> * mid = new Node<T, CC, NE>(where.begin, where.end, 
+                                              children.alphabet_size(), this);
   children[fl] = mid;
   mid->children[ll] = son;
+  son->parent = mid;
   son->begin += where.size();
   return mid;
 }
@@ -54,7 +56,7 @@ void stree::Node<T, CC, NE>::dump
   }
 
 
-  for(int i = 0; i < alphabet_size; i++){
+  for(int i = 0; i < children.alphabet_size(); i++){
     if(children[i]){
       for(int j = 0; j < indent; j++) out << " ";
       out << i << std::endl;

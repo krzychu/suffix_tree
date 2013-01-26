@@ -9,17 +9,17 @@
 namespace stree{
 
 
-template<class T, class CC>
+template<class T, template<class> class CC, class NE>
 struct StackFrame
 {
-  Node * node;
+  Node<T, CC, NE> * node;
   bool first_visit;
   int depth;
 }
 
 
-template<class T, class CC>
-void dfs(const SuffixTree<T, CC> & tree, Visitor & visitor)
+template<class T, template<class> class CC, class NE>
+void dfs(const SuffixTree<T, CC, NE> & tree, Visitor<T, CC, NE & visitor)
 {
   std::vector<>stack;
   stack.push_back(tree.root());

@@ -33,11 +33,13 @@ struct RefPair;
 template<class T, template<class> class CC = Array, class NE = Empty>
 struct Node : public Substr
 {
-  CC< Node<T, CC, NE> > children;
-  int alphabet_size;
-  Node<T, CC, NE> * suffix_link;
+  typedef Node<T, CC, NE> Type;
 
-  Node(int b, int e, int alphabet);
+  CC< Node<T, CC, NE> > children;
+  Node<T, CC, NE> * suffix_link;
+  Node<T, CC, NE> * parent;
+
+  Node(int b, int e, int alphabet, Type * p);
   ~Node();
   
   Node * split(const Context<T> & cx, const RefPair<T, CC, NE> & rp);

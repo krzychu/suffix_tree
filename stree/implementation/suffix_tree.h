@@ -5,8 +5,9 @@ template<class T, template<class> class CC, class NE>
 stree::SuffixTree<T, CC, NE>::SuffixTree(int alphabet_size)
   : context_(text_), alphabet_size_(alphabet_size)
 {
-  root_ = new Node<T, CC, NE>(-1, 0, alphabet_size);
-  aux_ = new Node<T, CC, NE>(0, 0, alphabet_size);
+  root_ = new Node<T, CC, NE>(-1, 0, alphabet_size, 0);
+  aux_ = new Node<T, CC, NE>(0, 0, alphabet_size, 0);
+  root_->parent = aux_;
   for(int i = 0; i < alphabet_size; i++)
     aux_->children[i] = root_;
   root_->suffix_link = aux_;
@@ -41,7 +42,8 @@ void stree::SuffixTree<T, CC, NE>::push_back(const T & letter)
       parent = parent->split(context_, active_);
    
     // add a leaf
-    parent->children[letter] = new Node<T, CC, NE>(active_.end, inf, alphabet_size_);
+    parent->children[letter] = new Node<T, CC, NE>
+        (active_.end, inf, alphabet_size_, parent);
     
     if(last_parent != root_)
       last_parent->suffix_link = parent;

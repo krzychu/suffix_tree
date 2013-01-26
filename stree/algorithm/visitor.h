@@ -5,24 +5,26 @@
 
 namespace stree{
 
+class Empty;
 
-template<class T, class CC>
+
+template<class T, template<class> class CC, class NE>
 class Node;
 
 
-template<class T, class CC>
+template<class T, template<class> class CC, class NE>
 struct Visit
 {
-  Node<T, CC> * current;
+  Node<T, CC, NE> * current;
   int depth;
 };
 
 
-template<class T, class CC>
+template<class T, template<class> class CC, class NE, class Pp>
 struct Visitor
 {
-  virtual void before(const Visit<T, CC> & visit) {}
-  virtual void after(const Visit<T, CC> & visit) {}
+  virtual void before(const Visit<T, CC, NE> & visit) {}
+  virtual void after(const Visit<T, CC, NE> & visit) {}
   virtual ~Visitor() {}
 };
 

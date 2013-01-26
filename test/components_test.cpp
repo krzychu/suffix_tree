@@ -17,21 +17,21 @@ class ComponentsTest : public ::testing::Test
     {}
 
     virtual void SetUp(){
-      root = new Node<int>(0, 0, asize);
+      root = new Node<int>(0, 0, asize, 0);
 
-      root_abc = new Node<int>(0, 3, asize);
+      root_abc = new Node<int>(0, 3, asize, root);
       root->children['a'] = root_abc;
 
-      root_c = new Node<int>(2, 3, asize);
+      root_c = new Node<int>(2, 3, asize, root);
       root->children['c'] = root_c;
 
-      root_abc_a = new Node<int>(0,1, asize); 
+      root_abc_a = new Node<int>(0,1, asize, root_abc); 
       root_abc->children['a'] = root_abc_a;
 
-      root_abc_d = new Node<int>(3, 4, asize);
+      root_abc_d = new Node<int>(3, 4, asize, root_abc);
       root_abc->children['d'] = root_abc_d;
 
-      root_c_b = new Node<int>(1, 2, asize);
+      root_c_b = new Node<int>(1, 2, asize, root_c);
       root_c->children['b'] = root_c_b;
     }
 
@@ -67,8 +67,8 @@ TEST_F(ComponentsTest, CheckIfItsImplicit)
 
 TEST_F(ComponentsTest, NextReturnsCorrectChild)
 {
-  Node<int> * root = new Node<int>(0, 0, asize);
-  Node<int> * child = new Node<int>(0, 3, asize);
+  Node<int> * root = new Node<int>(0, 0, asize, 0);
+  Node<int> * child = new Node<int>(0, 3, asize, root);
   root->children['a'] = child;
   RefPair<int> rp(root, 0, 1);
   ASSERT_EQ(child, rp.next(cx));
@@ -117,4 +117,6 @@ TEST_F(ComponentsTest, SplitWorks)
   ASSERT_EQ(root_abc, mid->children['c']);
   ASSERT_EQ(1, root_abc->size());
   ASSERT_EQ(mid, root->children['a']);
+
+  ASSERT_EQ(root, mid->parent);
 }
