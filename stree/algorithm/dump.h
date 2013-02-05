@@ -47,6 +47,13 @@ class DumpVisitor : public NodeVisitor<T, CC, NE>
 };
 
 
+
+/*!
+ * Prints tree content to given stream
+ * @param T, CC, NE like in SuffixTree
+ * @param tree tree to print
+ * @param out stream to write to
+ */
 template<class T, template<class> class CC, class NE>
 void dump(SuffixTree<T, CC, NE> & tree, std::ostream & out)
 {

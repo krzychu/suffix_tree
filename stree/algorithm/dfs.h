@@ -9,17 +9,34 @@
 
 namespace stree{
 
-
+/**
+ * Stack frame for DFS tree traversal 
+ */
 template<class T, template<class> class CC, class NE>
 struct StackFrame : public Visit<T, CC, NE>
 {
+  /**
+   * Indicates if this is the first time we visit current node
+   */
   bool first_visit;
 
+  /**
+   * @param node visited node
+   * @param depth length of uncompressed path from root to node
+   */
   StackFrame(Node<T, CC, NE> * const node, int depth)
     : Visit<T, CC, NE>(node, depth), first_visit(true) {}
 };
 
 
+
+
+/**
+ * DFS tree traversal
+ * @param T, CC, NE like in SuffixTree
+ * @param tree tree to traverse
+ * @param visitor visitor class to use
+ */
 template<class T, template<class> class CC, class NE>
 void dfs
   (SuffixTree<T, CC, NE> & tree, NodeVisitor<T, CC, NE> & visitor)

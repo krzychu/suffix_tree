@@ -11,10 +11,18 @@ template<class T>
 class ArrayIterator;
 
 
+
+/*
+ * Child container that pretends to be ordinary c++ array
+ * @param T node type
+ */
 template<class T>
 class Array
 {
   public:
+    /*!
+     * @param alphabet_size size of tree alphabet
+     */
     Array(int alphabet_size);
     ~Array();
 
@@ -26,7 +34,14 @@ class Array
     T * & operator[] (int idx)
       { return values_[idx]; }
 
+    /*!
+     * Deletes all non - NULL pointers
+     */
     void delete_all();
+
+    /*!
+     * @return number of non - NULL entries
+     */
     int size() const;
 
     friend class ArrayIterator<T>;
