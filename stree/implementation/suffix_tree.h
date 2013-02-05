@@ -89,11 +89,3 @@ bool stree::SuffixTree<T, CC, NE>::contains
   }
   return true;
 }
-
-
-
-template<class T, template<class> class CC, class NE>
-void stree::SuffixTree<T, CC, NE>::dump(std::ostream & out) const
-{
-  root_->dump(out, 0, context_);
-}

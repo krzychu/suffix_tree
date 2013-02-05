@@ -31,41 +31,6 @@ stree::Node<T, CC, NE> * stree::Node<T, CC, NE>::split
   return mid;
 }
 
-
-
-template<class T, template<class> class CC, class NE>
-void stree::Node<T, CC, NE>::dump
-  (std::ostream & out, int indent , const Context<T> & cx) const
-{ 
-  for(int i = 0; i < indent; i++) out << " ";
-  
-  if(begin == -1){
-    out << ":root @ " << this << std::endl;
-  }
-  else{
-    out << "==> ";
-    for(int i = begin; i < end && i < cx.text.size(); i++)
-      out << (char)(cx.text[i]);
-
-    if(!leaf())
-      out << " " << size();
-    else
-      out << " leaf";
-    out << " " << this << " " << suffix_link;
-    out << std::endl;
-  }
-
-
-  for(int i = 0; i < children.alphabet_size(); i++){
-    if(children[i]){
-      for(int j = 0; j < indent; j++) out << " ";
-      out << i << std::endl;
-      children[i]->dump(out, indent + 2, cx);
-    }
-  }
-}
-
-
 template<class T, template<class> class CC, class NE>
 bool stree::Node<T, CC, NE>::leaf() const
 {

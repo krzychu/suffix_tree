@@ -40,12 +40,10 @@ struct Node : public Substr
   Node<T, CC, NE> * parent;
 
   Node(int b, int e, int alphabet, Type * p);
-  ~Node();
+  virtual ~Node();
   
   Node * split(const Context<T> & cx, const RefPair<T, CC, NE> & rp);
   bool leaf() const;
-
-  void dump(std::ostream & out, int indent, const Context<T> & cx) const;
 };
 
 
@@ -103,7 +101,7 @@ class SuffixTree
     template<class InputIterator>
     bool contains(InputIterator begin, InputIterator end) const;
 
-    void dump(std::ostream & out) const;
+    Context<T> & context() { return context_; }
 
   private:
     Node<T, CC, NE> * aux_;

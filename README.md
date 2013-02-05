@@ -5,7 +5,7 @@ Online Suffix Tree implementation
 [Ukkonen](http://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf) algorithm.
 
 
-## Compilation ## 
+## Compilation 
 `suffix_tree` is header-only library, so you don't have to compile anything :
 just put
         
@@ -15,7 +15,7 @@ in your program. If you want to run unit tests, you have to compile them using
 CMake and GTest library.
 
 
-## Library overview ##
+## Library overview
 
 
 ## Ex

@@ -11,10 +11,12 @@ if(${GTEST_FOUND})
     test/tree_test.cpp
     test/array.cpp
     test/visitor.cpp
+    test/dfs.cpp
     )
   target_link_libraries(test ${GTEST_BOTH_LIBRARIES})
 endif()
 
 add_executable( profiling test/profiling.cpp )
 add_executable( timing test/profiling.cpp )
+add_executable( dump test/dump.cpp )
 set_target_properties(profiling PROPERTIES LINK_FLAGS -pg)

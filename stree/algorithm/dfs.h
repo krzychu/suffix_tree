@@ -1,7 +1,8 @@
 #ifndef SUFFIX_TREE_DFS_H_
 #define SUFFIX_TREE_DFS_H_
 
-#include <vector.h>
+#include <vector>
+#include <iostream>
 
 #include <suffix_tree.h>
 #include "visitor.h"
@@ -10,22 +11,46 @@ namespace stree{
 
 
 template<class T, template<class> class CC, class NE>
-struct StackFrame
+struct StackFrame : public Visit<T, CC, NE>
 {
-  Node<T, CC, NE> * node;
   bool first_visit;
-  int depth;
-}
+
+  StackFrame(Node<T, CC, NE> * const node, int depth)
+    : Visit<T, CC, NE>(node, depth), first_visit(true) {}
+};
 
 
 template<class T, template<class> class CC, class NE>
-void dfs(const SuffixTree<T, CC, NE> & tree, Visitor<T, CC, NE & visitor)
+void dfs
+  (SuffixTree<T, CC, NE> & tree, NodeVisitor<T, CC, NE> & visitor)
 {
-  std::vector<>stack;
-  stack.push_back(tree.root());
+  typedef StackFrame<T, CC, NE> SF;
+  typedef Node<T, CC, NE> N;
+
+  std::vector<SF> stack;
+  stack.push_back(SF(tree.root(), 0));
 
   while(!stack.empty()){
-    stack.pop_back();
+    SF & current = stack.back();
+
+    if(current.first_visit){
+      current.first_visit = false;
+      visitor.before(current, tree.context()); 
+      // iterate all children and put them on stack
+      typedef typename CC< Node<T, CC, NE> >::const_iterator itr_t;
+      itr_t itr = current.current->children.begin(); 
+      itr_t end = current.current->children.end();
+      while(itr != end)
+      {
+        SF cf(itr->second, itr->second->size() + current.depth);
+        stack.push_back(cf);
+        ++itr;
+      }
+    }
+    else{
+      visitor.after(current, tree.context());
+      stack.pop_back();
+    }
   }
 }
 
