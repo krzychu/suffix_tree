@@ -1,7 +1,7 @@
 project(suffix_tree)
 cmake_minimum_required(VERSION 2.8)
 
-include_directories(stree)
+include_directories(.)
 
 find_package(GTest)
 if(${GTEST_FOUND})
@@ -10,8 +10,6 @@ if(${GTEST_FOUND})
     test/components_test.cpp
     test/tree_test.cpp
     test/array.cpp
-    test/visitor.cpp
-    test/dfs.cpp
     )
   target_link_libraries(test ${GTEST_BOTH_LIBRARIES})
 endif()

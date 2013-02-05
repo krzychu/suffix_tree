@@ -4,8 +4,8 @@
 #include <vector>
 #include <iostream>
 
-#include <suffix_tree.h>
-#include "visitor.h"
+#include <stree/suffix_tree.h>
+#include <stree/algorithm/node_visitor.h>
 
 namespace stree{
 

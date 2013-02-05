@@ -2,8 +2,8 @@
 #include <iostream>
 #include <cstring>
 
-#include <suffix_tree.h>
-#include <algorithm/dump.h>
+#include <stree/suffix_tree.h>
+#include <stree/algorithm/dump.h>
 
 using namespace stree;
 

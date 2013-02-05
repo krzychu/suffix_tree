@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cstdlib>
-#include "suffix_tree.h"
+#include <stree/suffix_tree.h>
 
 
 template<class T>

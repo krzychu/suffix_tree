@@ -1,5 +1,5 @@
 #include <cstdio>
-#include <suffix_tree.h>
+#include <stree/suffix_tree.h>
 #include <cstdlib>
 
 int main()

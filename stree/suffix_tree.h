@@ -3,7 +3,8 @@
 
 #include <vector>
 #include <iostream>
-#include "child_container/array.h"
+
+#include <stree/child_container/array.h>
 
 namespace stree{
 
@@ -25,9 +26,6 @@ struct Context;
 
 template<class T, template<class> class CC, class NE>
 struct RefPair;
-
-
-
 
 
 template<class T, template<class> class CC = Array, class NE = Empty>

@@ -1,4 +1,4 @@
-#include "suffix_tree.h"
+#include <stree/suffix_tree.h>
 #include <gtest/gtest.h>
 #include <iostream>
 

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <algorithm>
 
-#include <algorithm/dfs.h>
-#include <algorithm/visitor.h>
+#include <stree/algorithm/dfs.h>
+#include <stree/algorithm/node_visitor.h>
 
 namespace stree{
 
