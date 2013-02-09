@@ -18,7 +18,7 @@ class DumpVisitor : public NodeVisitor<T, CC, NE>
     {}
 
     virtual void before
-      (const Visit<T, CC, NE> & v, const Context<T> & c) 
+      (const NodeVisit<T, CC, NE> & v, const Context<T> & c) 
     {
       for(int i = 0; i < indent_; i++) 
         out_ << " ";
@@ -34,7 +34,7 @@ class DumpVisitor : public NodeVisitor<T, CC, NE>
     }
 
     virtual void after
-      (const Visit<T, CC, NE> & v, const Context<T> & c) 
+      (const NodeVisit<T, CC, NE> & v, const Context<T> & c) 
     {
       indent_ -= indent_step_; 
     }

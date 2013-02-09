@@ -17,7 +17,7 @@ class Context;
  * Visitor parameters
  */
 template<class T, template<class> class CC, class NE>
-struct Visit
+struct NodeVisit
 {
   //! node to process 
   Node<T, CC, NE> * current;
@@ -29,7 +29,7 @@ struct Visit
    * @param node node to process
    * @param d depth of node
    */
-  Visit(Node<T, CC, NE> * const node, int d)
+  NodeVisit(Node<T, CC, NE> * const node, int d)
     : current(node), depth(d) {}
 };
 
@@ -51,7 +51,7 @@ struct NodeVisitor
    * @param context tree context
    */
   virtual void before
-    (const Visit<T, CC, NE> & visit, const Context<T> & context) 
+    (const NodeVisit<T, CC, NE> & visit, const Context<T> & context) 
   {}
 
   /*!
@@ -60,7 +60,7 @@ struct NodeVisitor
    * @param context tree context
    */
   virtual void after
-    (const Visit<T, CC, NE> & visit, const Context<T> & context) {}
+    (const NodeVisit<T, CC, NE> & visit, const Context<T> & context) {}
 
   virtual ~NodeVisitor() {}
 };
