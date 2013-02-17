@@ -160,10 +160,6 @@ class SuffixTree
     //! Inserts letter to the tree
     void push_back(const T & letter);
 
-    //! Inserts range to the tree
-    template<class InputIterator>
-    void add(InputIterator begin, InputIterator end);
-  
     Node<T, CC, NE> * root() const { return root_; }
     int alphabet_size() const {return alphabet_size_;}
 
@@ -171,6 +167,7 @@ class SuffixTree
     bool contains(InputIterator begin, InputIterator end) const;
 
     Context<T> & context() { return context_; }
+    const std::vector<T> & text() const { return text_; }; 
 
   private:
     Node<T, CC, NE> * aux_;

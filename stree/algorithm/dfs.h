@@ -10,7 +10,7 @@
 namespace stree{
 
 /**
- * Stack frame for DFS tree traversal 
+ * Stack frame for node traversal 
  */
 template<class T, template<class> class CC, class NE>
 struct NodeStackFrame : public NodeVisit<T, CC, NE>
